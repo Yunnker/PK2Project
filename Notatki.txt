@@ -1,0 +1,38 @@
+plik zapisu zawiera instrukcje rekonstrukcji drzewa
+na przyklad
+	PushBack(LP)
+	FromPosition(0)->SetName("Facebook")
+	
+	albo
+	
+	PB LP
+	FP 0 SN Facebook
+
+
+Object:
+	Edit(std::string ciag)
+	if(ciag = "") then UI    ->	"login,haslo"
+	else - ciachamy ciag i wypelniamy edycją - "login,haslo" -> login haslo
+
+Object:
+	Select(std::string s)
+	if(s = "") then ui
+
+
+1 - Wypisz zawartosc
+2 - Wypisz calosc
+3 - Wybierz dalej
+4 - Edytuj
+5 - Create
+0 - Powrot
+
+3(1,4(Siema,,))
+3(5(1,HejkaTuLenka)3(5(1,siemka)))
+
+TODO:
+Select dla LP
+
+
+xxx(xxx)
+
+((()()))()

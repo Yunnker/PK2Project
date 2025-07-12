@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 3.31.6)
+
+project(PM VERSION 0.1)
+	set(CMAKE_CXX_STANDARD 23)
+	set(CMAKE_CXX_STANDARD_REQUIRED True)
+	set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT PM)
+	
+	file(GLOB_RECURSE SOURCE_FILES "include/*.cpp")
+
+	add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
+ 	
+	target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+	)
