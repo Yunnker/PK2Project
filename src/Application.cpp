@@ -94,27 +94,27 @@ void Application::Run()
 		{
 		default:
 			break;
-		case '1':	// Wypisz wszystkie nazwy, loginy i hasla
+		case '1':	// PRINT ALL NAMES AND CONTENTS
 			system("cls");
 			m_fileManager.m_root.PrintFull();
 			std::cout << std::endl;
 			break;
-		case '2':	// Wypisz wszystkie obiekty
+		case '2':	// PRINT ALL NAMES
 			system("cls");
 			m_fileManager.m_root.Print();
 			std::cout << std::endl;
 			break;
-		case '3':	// Wypisz tylko foldery
+		case '3':	// PRINT ONLY FOLDERS
 			system("cls");
 			m_fileManager.m_root.PrintFolders();
 			std::cout << std::endl;
 			break;
-		case '4':	// Wybierz folder
+		case '4':	// ENTER ROOT FOLDER
 			system("cls");
 			m_fileManager << m_fileManager.m_root.Select("");
 			std::cout << std::endl;
 			break;
-		case '5':	// Znajdz haslo
+		case '5':	// FIND PASSWORD BY NAME
 			system("cls");
 			std::cout << "Podaj nazwe pod ktora znajduje sie haslo" << std::endl;
 			std::cin >> m_input;
@@ -123,7 +123,7 @@ void Application::Run()
 				m_fileManager << h;
 			std::cout << std::endl;
 			break;
-		case '0':	// Zakoncz program
+		case '0':	// END PROGRAM
 			system("cls");
 			m_End(0);
 			break;
