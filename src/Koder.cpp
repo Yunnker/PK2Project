@@ -26,7 +26,7 @@ void Koder::SetHash(size_t x)
 	m_hash = x;
 }
 
-size_t Koder::HashMeThisStrXTimes(std::string& str, uint64_t x)
+size_t Koder::HashMeThisStrXTimes(const std::string& str, uint64_t x)
 {
 	size_t var = m_str_hash(str);
 	for (size_t i = 1; i < x; i++)

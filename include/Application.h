@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
 
 class Application
 {
@@ -11,7 +10,7 @@ public:
 
 	Application();
 	Application(int argc, char* argv[]);
-	void Start();
+	void Run();
 	void m_End(int x);
 
 private:

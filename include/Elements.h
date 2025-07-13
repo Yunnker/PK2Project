@@ -1,30 +1,26 @@
 #include "Object.h"
 
-class Standard : public Object {
-public:
-    Standard() {
-        SetName("Standard");
-        SetType(ObjectEnum::Standard);
-    }
-};
-
 class LP : public Object {
     std::string m_login;
     std::string m_pass;
 public:
+
     LP();
     LP(std::string login, std::string pass);
     LP(std::string name, std::string login, std::string pass);
+
+
     void PrintFull(int spaces = 0) override;
-    std::string Edit(std::string s) override;
-    std::string Select(std::string s) override;
-    static std::string Create();
+    std::string Edit(const std::string &s) override;
+    std::string Select(const std::string& s) override;
+
+    static std::string CreationMenu();
 };
 
-class LinkedList : public Object {
+class Folder : public Object {
     struct Node {
         std::shared_ptr<Object> data;
-        std::shared_ptr<LinkedList> folder;
+        std::shared_ptr<Folder> folder;
         std::shared_ptr<Node> next;
 
         int Size();
@@ -39,13 +35,13 @@ class LinkedList : public Object {
     std::shared_ptr<Node> m_head;
 
 public:
-    LinkedList() : m_head(nullptr) {
+    Folder() : m_head(nullptr) {
         SetName("Folder");
-        SetType(ObjectEnum::Folder);
+        SetType(ObjectTypes::Folder);
     }
-    LinkedList(std::string name) : m_head(nullptr) {
+    Folder(std::string name) : m_head(nullptr) {
         SetName(name);
-        SetType(ObjectEnum::Folder);
+        SetType(ObjectTypes::Folder);
     }
 
     int Size();
@@ -53,15 +49,19 @@ public:
     void PrintFolders(int spaces = 0);
     void PrintFull(int spaces = 0) override;
 
-    std::string Create(std::string s);
-    std::string Select(std::string s) override;
-    std::string Find(std::string s);
+    static std::string CreationMenu();
 
-    ObjectEnum::ObjectType CheckType(int pos);
+    std::string CreateElement(const std::string& s) override;
+    std::string Select(const std::string& s) override;
+    std::string Edit(const std::string& s) override;    //TODO
+
+    std::string Find(const std::string& s);
+
+    ObjectTypes::ObjectType CheckType(int pos);
 
 
     std::shared_ptr<Object> FromPosition(int pos);
-    std::shared_ptr<LinkedList> FromPositionFolder(int pos);
+    std::shared_ptr<Folder> FromPositionFolder(int pos);
     void PopFront();
     void PopBack();
     void DeleteFromPosition(int position);
@@ -75,9 +75,9 @@ public:
         m_head = newNode;
     }
 
-    void PushFrontFolder(LinkedList value) {
+    void PushFrontFolder(Folder value) {
         std::shared_ptr<Node> newNode = std::make_shared<Node>();
-        newNode->folder = std::make_shared<LinkedList>(value);
+        newNode->folder = std::make_shared<Folder>(value);
         newNode->next = m_head;
         m_head = newNode;
     }
@@ -101,7 +101,7 @@ public:
         temp->next = newNode;
     }
 
-    void PushBackFolder(LinkedList value);
+    void PushBackFolder(Folder value);
 
     template<class T>
     void InsertAtPosition(T value, int position) {
@@ -126,5 +126,5 @@ public:
         temp->next = newNode;
     }
 
-    void InsertAtPositionFolder(LinkedList value, int position);
+    void InsertAtPositionFolder(Folder value, int position);
 };

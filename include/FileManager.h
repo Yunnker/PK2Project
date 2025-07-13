@@ -12,17 +12,18 @@ public:
     void FreshCreate();
     void ReadBase();
     void Save(std::string s);
+    void SetPass(std::string s);
 
-    LinkedList m_root;
+
+    Folder m_root;
     Koder m_koder;
+
 
     template <typename T>
     FileManager& operator<<(const T& data) {
         Save(data);
         return *this;
     }
-
-    void SetPass(std::string s);
 
 private:
     std::fstream* m_file;

@@ -2,22 +2,18 @@
 #include <iostream>
 #include <string>
 
-namespace ObjectEnum {
+namespace ObjectTypes {
     enum ObjectType {
         NullType,
         Folder,
-        Standard,
         LP
     };
-};
+}
 
 class Object {
-protected:
-    ObjectEnum::ObjectType m_type = ObjectEnum::NullType;
-    std::string m_name = "Default name";
 public:
-    void SetType(ObjectEnum::ObjectType type) { m_type = type; }
-    ObjectEnum::ObjectType GetType() const { return m_type; }
+    void SetType(ObjectTypes::ObjectType type) { m_type = type; }
+    ObjectTypes::ObjectType GetType() const { return m_type; }
 
     void SetName(const std::string& newName) { m_name = newName; }
     const std::string& GetName() const { return m_name; }
@@ -38,6 +34,14 @@ public:
         std::cout << m_name << std::endl;
     }
 
-    virtual std::string Edit(std::string s) { return ""; }
-    virtual std::string Select(std::string s) { return ""; }
+    virtual void PrintFolders(int spaces = 0) {};
+    virtual std::string Edit(const std::string &s) { return ""; }
+    virtual std::string Select(const std::string &s) { return ""; }
+    virtual std::string CreateElement(const std::string &s) { return ""; }
+
+protected:
+
+    ObjectTypes::ObjectType m_type = ObjectTypes::NullType;
+
+    std::string m_name = "Default name";
 };

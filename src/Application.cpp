@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Localization.h"
 
 Application::Application()
 {
@@ -8,23 +9,25 @@ Application::Application(int argc, char* argv[])
 {
 }
 
-void Application::Start()
+void Application::Run()
 {
+	// ### Initilize localization
+	Locale::InitStrings();
 
-	// ### Otwarcie programu
+	// ### Start of the program
 	int ans = 0;
 	while (ans < 1 || ans > 3)
 	{
-		std::cout << "W jaki sposob chcesz rozpoczac program?" << std::endl;
-		std::cout << "1. Swiezy start" << std::endl;
-		std::cout << "2. Odczyt domyslnego pliku hasel (db.txt)" << std::endl;
-		std::cout << "3. Odczyt innego pliku hasel" << std::endl;
+		PRINTLN(Locale::STRING_HOW_DO_YOU_WANT_TO_START_THE_PROGRAM);
+		PRINTLN(Locale::STRING_1_FRESH_START);
+		PRINTLN(Locale::STRING_2_READ_DEFAULT_PASSWORD_FILE);
+		PRINTLN(Locale::STRING_3_READ_OTHER_PASSWORD_FILE);
 
 		std::cin >> ans;
 		if (ans == 1)
 		{
 			char x = 0;
-			std::cout << "Na pewno? y/n (nadpisze to plik db.txt - jesli takowy istnieje)" << std::endl;
+			PRINTLN(Locale::STRING_ARE_YOU_SURE);
 			std::cin >> x;
 			if (x != 'y')
 				ans = 0;
@@ -44,7 +47,7 @@ void Application::Start()
 			m_fileManager.Init("");
 			break;
 		case 3:
-			std::cout << "Podaj nazwe pliku (wlacznie z rozszerzeniem)" << std::endl;
+			PRINTLN(Locale::STRING_ENTER_PATH_TO_PASSWORD_FILE);
 			std::cin >> x;
 			m_fileManager.Init(x);
 			break;
@@ -53,10 +56,10 @@ void Application::Start()
 		}
 	}
 	
-	// ### Wejscie do bazy hasel
+	// ### Opening the password database
 	for (;;)
 	{
-		std::cout << "Podaj haslo do bazy:" << std::endl;
+		PRINTLN(Locale::STRING_ENTER_PASSWORD_FOR_DATABASE);
 		std::cin >> m_input;
 		size_t compare = m_fileManager.m_koder.HashMeThisStrXTimes(m_input,24225132);
 		if (compare == m_fileManager.m_koder.GetHash())
@@ -68,24 +71,24 @@ void Application::Start()
 			return;
 	}
 
-	// Odczyt i dekrypcja bazy
+	// Reading and decrypting the database
 	m_fileManager.ReadBase();
 	system("cls");
 
-	// ### Glowne MENU
-	std::cout << "Witaj w bazie!" << std::endl;
+	// ### Main menu
+	PRINTLN(Locale::STRING_WELCOME_TO_PASSWORD_DATABASE);
 	for (;;)
 	{
-		std::cout << "MENU:" << std::endl;
-		std::cout << "1. Wypisz wszystkie nazwy, loginy i hasla." << std::endl;
-		std::cout << "2. Wypisz wszystkie obiekty." << std::endl;
-		std::cout << "3. Wypisz tylko foldery." << std::endl;
-		std::cout << "4. Wybierz folder." << std::endl;
-		std::cout << "5. Znajdz haslo po nazwie." << std::endl;
-		std::cout << "0. Zakoncz program." << std::endl;
+		PRINTLN(Locale::STRING_MENU);
+		PRINTLN(Locale::STRING_1_PRINT_ALL_NAMES_AND_CONTENTS);
+		PRINTLN(Locale::STRING_2_PRINT_ALL_NAMES);
+		PRINTLN(Locale::STRING_3_PRINT_ONLY_FOLDERS);
+		PRINTLN(Locale::STRING_4_ENTER_ROOT_FOLDER);
+		PRINTLN(Locale::STRING_5_FIND_PASSWORD_BY_NAME);
+		PRINTLN(Locale::STRING_0_END_PROGRAM);
 		std::cin >> m_input;
 
-		LinkedList temp;
+		Folder temp;
 		std::string h = "";
 		switch (m_input[0])
 		{

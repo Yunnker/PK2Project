@@ -5,7 +5,8 @@ class Koder {
 public:
     std::string EncryptLine(const std::string& line);
     std::string DecryptLine(const std::string& line);
-    size_t HashMeThisStrXTimes(std::string& str, uint64_t x);
+
+    size_t HashMeThisStrXTimes(const std::string& str, uint64_t x);
 
     size_t GetHash();
     void SetHash(size_t x);

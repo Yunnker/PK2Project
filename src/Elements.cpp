@@ -1,11 +1,11 @@
 #include "Elements.h"
 
-void LinkedList::PopFront() {
+void Folder::PopFront() {
     if (!m_head) return;
     m_head = m_head->next;
 }
 
-void LinkedList::PopBack() {
+void Folder::PopBack() {
     if (!m_head) return;
     if (!m_head->next) {
         m_head = nullptr;
@@ -19,7 +19,7 @@ void LinkedList::PopBack() {
     temp->next = nullptr;
 }
 
-void LinkedList::DeleteFromPosition(int position) {
+void Folder::DeleteFromPosition(int position) {
     if (position < 0) return;
     if (position == 0) {
         PopFront();
@@ -35,7 +35,7 @@ void LinkedList::DeleteFromPosition(int position) {
     temp->next = temp->next->next;
 }
 
-void LinkedList::Print(int spaces) {
+void Folder::Print(int spaces) {
     if (spaces == -2) {
         std::cout << GetName() << " - " << GetType() << std::endl;
         return;
@@ -80,7 +80,7 @@ void LinkedList::Print(int spaces) {
     }
 }
 
-void LinkedList::PrintFolders(int spaces) {
+void Folder::PrintFolders(int spaces) {
     int holdSpaces = spaces;
     while (spaces--) std::cout << "  ";
     std::cout << GetName() << ':' << std::endl;
@@ -95,7 +95,7 @@ void LinkedList::PrintFolders(int spaces) {
     }
 }
 
-void LinkedList::PrintFull(int spaces) {
+void Folder::PrintFull(int spaces) {
     int holdSpaces = spaces;
     while (spaces--) std::cout << "  ";
     std::cout << GetName() << ':' << std::endl;
@@ -110,12 +110,12 @@ void LinkedList::PrintFull(int spaces) {
     }
 }
 
-int LinkedList::Size() {
+int Folder::Size() {
     if (!m_head) return 0;
     return m_head->Size();
 }
 
-std::string LinkedList::Create(std::string s)
+std::string Folder::CreateElement(const std::string& s)
 {
     int comas = 0;
     int x = -1;
@@ -143,15 +143,10 @@ std::string LinkedList::Create(std::string s)
         switch (x)
         {
         case 1:
-            std::cout << "Podaj nazwe folderu (znak '/' zeby pominac)" << std::endl;
-            std::cin >> ans;
-            if (ans == "/")
-                z = z;
-            else
-                z = z + "," + ans;
+			z = z + "," + Folder::CreationMenu();
             break;
         case 2:
-            z = z + "," + LP::Create();
+			z = z + "," + LP::CreationMenu();
             break;
         case 0:
             return "";
@@ -186,7 +181,7 @@ std::string LinkedList::Create(std::string s)
     {
     case 1:
         help = z.substr(len + 1, z.npos);
-        PushBackFolder(LinkedList(help));
+        PushBackFolder(Folder(help));
         break;
     case 2:
         help = z.substr(len + 1, z.npos);
@@ -214,11 +209,11 @@ std::string LinkedList::Create(std::string s)
     return z;
 }
 
-ObjectEnum::ObjectType LinkedList::CheckType(int pos)
+ObjectTypes::ObjectType Folder::CheckType(int pos)
 {
     if (pos < 0) {
         std::cout << "Position should be >= 0." << std::endl;
-        return ObjectEnum::NullType;
+        return ObjectTypes::NullType;
     }
     if (pos == 0) {
         if (m_head->data == nullptr)
@@ -233,7 +228,7 @@ ObjectEnum::ObjectType LinkedList::CheckType(int pos)
     }
     if (!temp) {
         std::cout << "Position out of range." << std::endl;
-        return ObjectEnum::NullType;
+        return ObjectTypes::NullType;
     }
 
     if (temp->data == nullptr)
@@ -243,7 +238,7 @@ ObjectEnum::ObjectType LinkedList::CheckType(int pos)
     return temp->data->GetType();
 }
 
-std::shared_ptr<Object> LinkedList::FromPosition(int pos)
+std::shared_ptr<Object> Folder::FromPosition(int pos)
 {
     if (pos < 0) {
         std::cout << "Position should be >= 0." << std::endl;
@@ -266,7 +261,7 @@ std::shared_ptr<Object> LinkedList::FromPosition(int pos)
     return temp->data;
 }
 
-std::shared_ptr<LinkedList> LinkedList::FromPositionFolder(int pos)
+std::shared_ptr<Folder> Folder::FromPositionFolder(int pos)
 {
     if (pos < 0) {
         std::cout << "Position should be >= 0." << std::endl;
@@ -289,10 +284,10 @@ std::shared_ptr<LinkedList> LinkedList::FromPositionFolder(int pos)
     return temp->folder;
 }
 
-void LinkedList::PushBackFolder(LinkedList value)
+void Folder::PushBackFolder(Folder value)
 {
     std::shared_ptr<Node> newNode = std::make_shared<Node>();
-    newNode->folder = std::make_shared<LinkedList>(value);
+    newNode->folder = std::make_shared<Folder>(value);
     newNode->next = NULL;
 
     if (!m_head) {
@@ -308,7 +303,7 @@ void LinkedList::PushBackFolder(LinkedList value)
     temp->next = newNode;
 }
 
-void LinkedList::InsertAtPositionFolder(LinkedList value, int position)
+void Folder::InsertAtPositionFolder(Folder value, int position)
 {
     if (position < 1) {
         std::cout << "Position should be >= 1." << std::endl;
@@ -321,7 +316,7 @@ void LinkedList::InsertAtPositionFolder(LinkedList value, int position)
     }
 
     std::shared_ptr<Node> newNode = std::make_shared<Node>();
-    newNode->data = std::make_shared<LinkedList>(value);
+    newNode->data = std::make_shared<Folder>(value);
 
     std::shared_ptr<Node> temp = m_head;
     for (int i = 1; i < position - 1 && temp; ++i) {
@@ -337,7 +332,7 @@ void LinkedList::InsertAtPositionFolder(LinkedList value, int position)
     temp->next = newNode;
 }
 
-std::string LinkedList::Select(std::string s)
+std::string Folder::Select(const std::string& s)
 {
     std::string z = "";
     if (s == "")
@@ -359,7 +354,7 @@ std::string LinkedList::Select(std::string s)
             std::string answ = "";
             int x = 0;
             std::string y = "";
-            ObjectEnum::ObjectType type = ObjectEnum::NullType;
+            ObjectTypes::ObjectType type = ObjectTypes::NullType;
             switch (ans)
             {
             case 1:
@@ -401,11 +396,11 @@ std::string LinkedList::Select(std::string s)
                 type = CheckType(x);
                 switch (type)
                 {
-                case ObjectEnum::NullType:
+                case ObjectTypes::NullType:
                     system("cls");
                     std::cout << "Bledny typ elementu\n";
                     break;
-                case ObjectEnum::Folder:
+                case ObjectTypes::Folder:
                     system("cls");
                     y = FromPositionFolder(x)->Select("");
                     break;
@@ -419,7 +414,7 @@ std::string LinkedList::Select(std::string s)
                     z = z + "4("+ answ + "," + y + ")";
                 break;
             case 5:
-                z = z + "5(" + Create("") + ")";
+                z = z + "5(" + CreateElement("") + ")";
                 break;
             case 6:
                 std::cout << '\n';
@@ -482,7 +477,7 @@ std::string LinkedList::Select(std::string s)
                 int ed = s.find(',', start);
                 std::string st1 = "";
                 std::string st2 = "";
-                ObjectEnum::ObjectType type = ObjectEnum::NullType;
+                ObjectTypes::ObjectType type = ObjectTypes::NullType;
                 if(ed - 1 - start>0)
                     st1 = s.substr(start + 1, ed - 1 - start);
                 if(end - 1 - start>0)
@@ -496,11 +491,11 @@ std::string LinkedList::Select(std::string s)
                 case '4':
                     switch (type)
                     {
-                    case ObjectEnum::NullType:
+                    case ObjectTypes::NullType:
                         system("cls");
                         std::cout << "Bledny typ elementu\n";
                         break;
-                    case ObjectEnum::Folder:
+                    case ObjectTypes::Folder:
                         system("cls");
                         FromPositionFolder(std::stoi(st1))->Select(s.substr(ed + 1, end - 1 - ed));
                         break;
@@ -511,7 +506,7 @@ std::string LinkedList::Select(std::string s)
                     }
                     break;
                 case '5':
-                    Create(st2);
+                    CreateElement(st2);
                     break;
                 case '6':
                     DeleteFromPosition(std::stoi(st2));
@@ -526,7 +521,12 @@ std::string LinkedList::Select(std::string s)
     return z;
 }
 
-std::string LinkedList::Find(std::string s)
+std::string Folder::Edit(const std::string& s)
+{
+    return std::string("");
+}
+
+std::string Folder::Find(const std::string& s)
 {
     std::shared_ptr<LP> name = std::make_shared<LP>(s,"","");
     std::string z = "";
@@ -534,7 +534,7 @@ std::string LinkedList::Find(std::string s)
     std::shared_ptr<Node> temp = m_head;
     for (int i = 0; i < Size(); i++)
     {
-        if (CheckType(i) == ObjectEnum::Folder)
+        if (CheckType(i) == ObjectTypes::Folder)
         {
             std::string y = temp->folder->Find(s);
             if (y != "")
@@ -578,17 +578,17 @@ LP::LP()
     std::cout << "Podaj haslo ktore chesz zapisac\n";
     std::cin >> ans;
     m_pass = ans;
-    SetType(ObjectEnum::LP);
+    SetType(ObjectTypes::LP);
 }
 
 LP::LP(std::string login, std::string pass)
     : m_login(login), m_pass(pass) {
-    SetName("LP"); SetType(ObjectEnum::LP);
+    SetName("LP"); SetType(ObjectTypes::LP);
 }
 
 LP::LP(std::string name, std::string login, std::string pass)
     : m_login(login), m_pass(pass) {
-    SetName(name); SetType(ObjectEnum::LP);
+    SetName(name); SetType(ObjectTypes::LP);
 }
 
 void LP::PrintFull(int spaces)
@@ -607,7 +607,7 @@ void LP::PrintFull(int spaces)
     std::cout << "|P:" << m_pass << std::endl;
 }
 
-std::string LP::Edit(std::string s)
+std::string LP::Edit(const std::string& s)
 {
     int comas = 2;
     std::string z = "";
@@ -689,7 +689,7 @@ std::string LP::Edit(std::string s)
     return z;
 }
 
-std::string LP::Select(std::string s)
+std::string LP::Select(const std::string& s)
 {
     std::string z = "";
     if (s == "")
@@ -730,7 +730,18 @@ std::string LP::Select(std::string s)
     return z;
 }
 
-std::string LP::Create()
+std::string Folder::CreationMenu()
+{
+	std::string answer = "";
+    std::cout << "Podaj nazwe folderu (znak '/' zeby pominac)" << std::endl;
+    std::cin >> answer;
+    if (answer == "/")
+		return std::string("");
+    else
+        return std::string(answer);
+}
+
+std::string LP::CreationMenu()
 {
     std::string ans = "";
     std::string seg = "";
@@ -745,7 +756,7 @@ std::string LP::Create()
     return ans;
 }
 
-int LinkedList::Node::Size()
+int Folder::Node::Size()
 {
     if (next != nullptr)
         return 1 + next->Size();
