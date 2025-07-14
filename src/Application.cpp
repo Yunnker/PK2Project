@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Localization.h"
+#include "SystemSpecific.h"
 
 Application::Application()
 {
@@ -73,7 +74,7 @@ void Application::Run()
 
 	// Reading and decrypting the database
 	m_fileManager.ReadBase();
-	system("cls");
+	CONSOLE_CLEAR();
 
 	// ### Main menu
 	PRINTLN(Locale::STRING_WELCOME_TO_PASSWORD_DATABASE);
@@ -95,28 +96,28 @@ void Application::Run()
 		default:
 			break;
 		case '1':	// PRINT ALL NAMES AND CONTENTS
-			system("cls");
+			CONSOLE_CLEAR();
 			m_fileManager.m_root.PrintFull();
 			std::cout << std::endl;
 			break;
 		case '2':	// PRINT ALL NAMES
-			system("cls");
+			CONSOLE_CLEAR();
 			m_fileManager.m_root.Print();
 			std::cout << std::endl;
 			break;
 		case '3':	// PRINT ONLY FOLDERS
-			system("cls");
+			CONSOLE_CLEAR();
 			m_fileManager.m_root.PrintFolders();
 			std::cout << std::endl;
 			break;
 		case '4':	// ENTER ROOT FOLDER
-			system("cls");
+			CONSOLE_CLEAR();
 			m_fileManager << m_fileManager.m_root.Select("");
 			std::cout << std::endl;
 			break;
 		case '5':	// FIND PASSWORD BY NAME
-			system("cls");
-			std::cout << "Podaj nazwe pod ktora znajduje sie haslo" << std::endl;
+			CONSOLE_CLEAR();
+			PRINTLN(Locale::STRING_ENTER_NAME_OF_ELEMENT_YOU_WANT_TO_FIND);
 			std::cin >> m_input;
 			h = m_fileManager.m_root.Find(m_input);
 			if (h != "")
@@ -124,7 +125,7 @@ void Application::Run()
 			std::cout << std::endl;
 			break;
 		case '0':	// END PROGRAM
-			system("cls");
+			CONSOLE_CLEAR();
 			m_End(0);
 			break;
 		}

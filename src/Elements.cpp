@@ -1,4 +1,6 @@
 #include "Elements.h"
+#include "Localization.h"
+#include "SystemSpecific.h"
 
 void Folder::PopFront() {
     if (!m_head) return;
@@ -125,16 +127,16 @@ std::string Folder::CreateElement(const std::string& s)
     {
         for (;;)
         {
-            std::cout << "MENU KREACJI ELEMENTU:" << std::endl;
-            std::cout << "1. Nowy folder" << std::endl;
-            std::cout << "2. Nowy LP (Login i Haslo)" << std::endl;
-            std::cout << "0. Powrot." << std::endl;
+			PRINTLN(Locale::STRING_ELEMENT_CREATION_MENU);
+			PRINTLN(Locale::STRING_1_NEW_FOLDER);
+			PRINTLN(Locale::STRING_2_NEW_LP);
+			PRINTLN(Locale::STRING_0_GO_BACK);
             std::cin >> ans;
             x = std::stoi(ans);
             if (x < 0 || x>2)
             {
-                system("cls");
-                std::cout << "Bledna opcja!\n";
+                CONSOLE_CLEAR();
+                PRINTLN(Locale::STRING_WRONG_INPUT);
             }
             else
                 break;
@@ -204,15 +206,15 @@ std::string Folder::CreateElement(const std::string& s)
         break;
     }
 
-    system("cls");
-    std::cout << "Pomyslna kreacja elementu" << std::endl;
+	CONSOLE_CLEAR();
+	PRINTLN(Locale::STRING_ELEMENT_CREATION_SUCCESS);
     return z;
 }
 
 ObjectTypes::ObjectType Folder::CheckType(int pos)
 {
     if (pos < 0) {
-        std::cout << "Position should be >= 0." << std::endl;
+		PRINTLN(Locale::STRING_POSITION_OUT_OF_RANGE);
         return ObjectTypes::NullType;
     }
     if (pos == 0) {
@@ -227,7 +229,7 @@ ObjectTypes::ObjectType Folder::CheckType(int pos)
         temp = temp->next;
     }
     if (!temp) {
-        std::cout << "Position out of range." << std::endl;
+        PRINTLN(Locale::STRING_POSITION_OUT_OF_RANGE);
         return ObjectTypes::NullType;
     }
 
@@ -241,7 +243,7 @@ ObjectTypes::ObjectType Folder::CheckType(int pos)
 std::shared_ptr<Object> Folder::FromPosition(int pos)
 {
     if (pos < 0) {
-        std::cout << "Position should be >= 0." << std::endl;
+        PRINTLN(Locale::STRING_POSITION_OUT_OF_RANGE);
         return nullptr;
     }
 
@@ -255,7 +257,7 @@ std::shared_ptr<Object> Folder::FromPosition(int pos)
     }
 
     if (!temp) {
-        std::cout << "Position out of range." << std::endl;
+        PRINTLN(Locale::STRING_POSITION_OUT_OF_RANGE);
         return nullptr;
     }
     return temp->data;
@@ -264,7 +266,7 @@ std::shared_ptr<Object> Folder::FromPosition(int pos)
 std::shared_ptr<Folder> Folder::FromPositionFolder(int pos)
 {
     if (pos < 0) {
-        std::cout << "Position should be >= 0." << std::endl;
+        PRINTLN(Locale::STRING_POSITION_OUT_OF_RANGE);
         return nullptr;
     }
 
@@ -278,7 +280,7 @@ std::shared_ptr<Folder> Folder::FromPositionFolder(int pos)
     }
 
     if (!temp) {
-        std::cout << "Position out of range." << std::endl;
+        PRINTLN(Locale::STRING_POSITION_OUT_OF_RANGE);
         return nullptr;
     }
     return temp->folder;
@@ -306,7 +308,7 @@ void Folder::PushBackFolder(Folder value)
 void Folder::InsertAtPositionFolder(Folder value, int position)
 {
     if (position < 1) {
-        std::cout << "Position should be >= 1." << std::endl;
+        PRINTLN(Locale::STRING_POSITION_OUT_OF_RANGE);
         return;
     }
 
@@ -324,7 +326,7 @@ void Folder::InsertAtPositionFolder(Folder value, int position)
     }
 
     if (!temp) {
-        std::cout << "Position out of range." << std::endl;
+        PRINTLN(Locale::STRING_POSITION_OUT_OF_RANGE);
         return;
     }
 
@@ -341,14 +343,16 @@ std::string Folder::Select(const std::string& s)
         while (cont)
         {
             int ans = 5;
-            std::cout << "MENU:" << std::endl;
-            std::cout << "1. Wypisz wszystkie nazwy, loginy i hasla w folderze." << std::endl;
-            std::cout << "2. Wypisz wszystkie obiekty w folderze." << std::endl;
-            std::cout << "3. Wypisz tylko foldery." << std::endl;
-            std::cout << "4. Wybierz." << std::endl;
-            std::cout << "5. Dodaj element." << std::endl;
-            std::cout << "6. Usun element." << std::endl;
-            std::cout << "0. Powrot." << std::endl;
+
+            PRINTLN(Locale::STRING_MENU);
+            PRINTLN(Locale::STRING_1_PRINT_ALL_NAMES_AND_CONTENTS);
+			PRINTLN(Locale::STRING_2_PRINT_ALL_NAMES);
+			PRINTLN(Locale::STRING_3_PRINT_ONLY_FOLDERS);
+            PRINTLN(Locale::STRING_4_SELECT_ELEMENT);
+            PRINTLN(Locale::STRING_5_ADD_ELEMENT);
+            PRINTLN(Locale::STRING_6_DELETE_ELEMENT);
+            PRINTLN(Locale::STRING_0_GO_BACK);
+
             std::cin >> ans;
 
             std::string answ = "";
@@ -358,54 +362,56 @@ std::string Folder::Select(const std::string& s)
             switch (ans)
             {
             case 1:
-                system("cls");
+				CONSOLE_CLEAR();
                 PrintFull();
                 std::cout << '\n';
                 break;
             case 2:
-                system("cls");
+                CONSOLE_CLEAR();
                 Print();
                 std::cout << '\n';
                 break;
             case 3:
-                system("cls");
+                CONSOLE_CLEAR();
                 PrintFolders();
                 std::cout << '\n';
                 break;
             case 4:
+                CONSOLE_CLEAR();
                 std::cout << '\n';
                 Print(-1);
                 std::cout << '\n';
-                std::cout << "Wybierz indeks elementu ktory chcesz wybrac (znak '/' zeby powrocic):" << std::endl;
+                
+				PRINTLN(Locale::STRING_ENTER_ELEMENTS_INDEX);
                 
                 std::cin >> answ;
                 
                 if (answ == "/")
                 {
-                    system("cls");
+                    CONSOLE_CLEAR();
                     break;
                 }
                 
                 x = std::stoi(answ);
                 if (x >= Size() || x < 0)
                 {
-                    system("cls");
-                    std::cout << "Bledny indeks elementu" << std::endl;
+                    CONSOLE_CLEAR();
+                    PRINTLN(Locale::STRING_INCORRECT_INDEX);
                     break;
                 }
                 type = CheckType(x);
                 switch (type)
                 {
                 case ObjectTypes::NullType:
-                    system("cls");
-                    std::cout << "Bledny typ elementu\n";
+                    CONSOLE_CLEAR();
+                    PRINTLN(Locale::STRING_INCORRECT_ELEMENT_TYPE);
                     break;
                 case ObjectTypes::Folder:
-                    system("cls");
+                    CONSOLE_CLEAR();
                     y = FromPositionFolder(x)->Select("");
                     break;
                 default:
-                    system("cls");
+                    CONSOLE_CLEAR();
                     y = m_head->operator[](x)->Select("");
                     
                     break;
@@ -414,26 +420,27 @@ std::string Folder::Select(const std::string& s)
                     z = z + "4("+ answ + "," + y + ")";
                 break;
             case 5:
+                CONSOLE_CLEAR();
                 z = z + "5(" + CreateElement("") + ")";
                 break;
             case 6:
                 std::cout << '\n';
                 Print(-1);
-                std::cout << "Wybierz indeks elementu ktory chcesz wybrac (znak '/' zeby powrocic):" << std::endl;
+                PRINTLN(Locale::STRING_ENTER_ELEMENTS_INDEX);
 
                 std::cin >> answ;
 
                 if (answ == "/")
                 {
-                    system("cls");
+                    CONSOLE_CLEAR();
                     break;
                 }
 
                 x = std::stoi(answ);
                 if (x >= Size() || x < 0)
                 {
-                    system("cls");
-                    std::cout << "Bledny indeks elementu" << std::endl;
+                    CONSOLE_CLEAR();
+                    PRINTLN(Locale::STRING_INCORRECT_INDEX);
                     break;
                 }
 
@@ -443,7 +450,7 @@ std::string Folder::Select(const std::string& s)
 
                 break;
             case 0:
-                system("cls");
+                CONSOLE_CLEAR();
                 std::cout << z << std::endl;
                 return z;
             default:
@@ -492,15 +499,15 @@ std::string Folder::Select(const std::string& s)
                     switch (type)
                     {
                     case ObjectTypes::NullType:
-                        system("cls");
-                        std::cout << "Bledny typ elementu\n";
+						CONSOLE_CLEAR();
+                        PRINTLN(Locale::STRING_INCORRECT_ELEMENT_TYPE);
                         break;
                     case ObjectTypes::Folder:
-                        system("cls");
+                        CONSOLE_CLEAR();
                         FromPositionFolder(std::stoi(st1))->Select(s.substr(ed + 1, end - 1 - ed));
                         break;
                     default:
-                        system("cls");
+                        CONSOLE_CLEAR();
                         FromPosition(std::stoi(st1))->Select(s.substr(ed + 1, end - 1 - ed));
                         break;
                     }
@@ -566,16 +573,16 @@ LP::LP()
     std::string ans = "";
     for (;;)
     {
-        std::cout << "Podaj nazwe elementu\n";
+        PRINTLN(Locale::STRING_ENTER_ELEMENTS_NAME);
         std::cin >> ans;
         if (ans != "")
             break;
     }
     SetName(ans);
-    std::cout << "Podaj login ktory chesz zapisac\n";
+    PRINTLN(Locale::STRING_ENTER_ELEMENTS_LOGIN);
     std::cin >> ans;
     m_login = ans;
-    std::cout << "Podaj haslo ktore chesz zapisac\n";
+    PRINTLN(Locale::STRING_ENTER_ELEMENTS_PASSWORD);
     std::cin >> ans;
     m_pass = ans;
     SetType(ObjectTypes::LP);
@@ -615,27 +622,23 @@ std::string LP::Edit(const std::string& s)
     {
         std::string segment = "";
         std::string prz = ",";
-        system("cls");
-        std::cout << "Podaj nowa nazwe (znak '/' zeby pominac)" << std::endl;
+		PRINTLN(Locale::STRING_ENTER_ELEMENTS_NEW_NAME);
         std::cin >> z;
         if (segment == "/")
             segment = "";
-        std::cout << "Podaj nowy login (znak '/' zeby pominac)" << std::endl;
+		PRINTLN(Locale::STRING_ENTER_ELEMENTS_NEW_LOGIN);
         std::cin >> segment;
         if (segment == "/")
             segment = "";
         z.append(prz);
         z.append(segment);
         segment = "";
-        std::cout << "Podaj nowe haslo (znak '/' zeby pominac)" << std::endl;
+		PRINTLN(Locale::STRING_ENTER_ELEMENTS_NEW_PASSWORD);
         std::cin >> segment;
         if (segment == "/")
             segment = "";
         z.append(prz);
         z.append(segment);
-
-        //std::cout << z << std::endl;
-
     }
     else
     {
@@ -649,8 +652,8 @@ std::string LP::Edit(const std::string& s)
     }
     if (comaCount != comas)
     {
-        std::cout << "syntax error while trying to edit LP:" << z << std::endl;
-        return std::string("error");
+		PRINTLN(Locale::STRING_SYNTAX_ERROR_WHILE_TRYING_TO_EDIT_LP);
+        return std::string("");
     }
 
     std::string line = "";
@@ -684,8 +687,8 @@ std::string LP::Edit(const std::string& s)
         }
         i--;
     }
-    system("cls");
-    std::cout << "Pomyslna edycja obiektu" << std::endl;
+	CONSOLE_CLEAR();
+	PRINTLN(Locale::STRING_SUCCESSFULLY_EDITED_LP);
     return z;
 }
 
@@ -698,24 +701,24 @@ std::string LP::Select(const std::string& s)
         while (cont)
         {
             int ans = 5;
-            std::cout << "MENU:" << std::endl;
-            std::cout << "1. Wypisz zawartosc." << std::endl;
-            std::cout << "2. Edytuj." << std::endl;
-            std::cout << "0. Powrot." << std::endl;
+			PRINTLN(Locale::STRING_MENU);
+            PRINTLN(Locale::STRING_1_PRINT_CONENTS);
+            PRINTLN(Locale::STRING_2_EDIT);
+            PRINTLN(Locale::STRING_0_GO_BACK);
             std::cin >> ans;
             switch (ans)
             {
             case 1:
-                system("cls");
+				CONSOLE_CLEAR();
                 PrintFull();
                 std::cout << '\n';
                 break;
             case 2:
-                system("cls");
+                CONSOLE_CLEAR();
                 z = z + "2(" + Edit("") + ")";
                 break;
             case 0:
-                system("cls");
+                CONSOLE_CLEAR();
                 std::cout << z << std::endl;
                 return z;
             default:
@@ -733,7 +736,7 @@ std::string LP::Select(const std::string& s)
 std::string Folder::CreationMenu()
 {
 	std::string answer = "";
-    std::cout << "Podaj nazwe folderu (znak '/' zeby pominac)" << std::endl;
+    PRINTLN(Locale::STRING_ENTER_ELEMENTS_NAME);
     std::cin >> answer;
     if (answer == "/")
 		return std::string("");
@@ -745,12 +748,12 @@ std::string LP::CreationMenu()
 {
     std::string ans = "";
     std::string seg = "";
-    std::cout << "Podaj nazwe elementu\n";
+	PRINTLN(Locale::STRING_ENTER_ELEMENTS_NAME);
     std::cin >> ans;
-    std::cout << "Podaj login ktory chesz zapisac\n";
+	PRINTLN(Locale::STRING_ENTER_ELEMENTS_LOGIN);
     std::cin >> seg;
     ans = ans + "," + seg;
-    std::cout << "Podaj haslo ktore chesz zapisac\n";
+	PRINTLN(Locale::STRING_ENTER_ELEMENTS_PASSWORD);
     std::cin >> seg;
     ans = ans + "," + seg;
     return ans;

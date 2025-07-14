@@ -1,5 +1,6 @@
 #include "FileManager.h"
 #include <sstream>
+#include "Localization.h"
 
 void FileManager::Init(std::string s) {
 	m_root.SetName("root");
@@ -8,7 +9,7 @@ void FileManager::Init(std::string s) {
 
 	m_file = new std::fstream(s, std::ios::in | std::ios::out);
 	if (!m_file->is_open()) {
-		std::cout << "Blad odczytu bazy" << std::endl;
+		PRINTLN(Locale::STRING_DATABASE_READ_ERROR);
 		return;
 	}
 
@@ -36,7 +37,7 @@ void FileManager::ReadBase() {
 
 void FileManager::FreshCreate()
 {
-	std::cout << "Podaj haslo do nowego pliku hasel:" << std::endl;
+	PRINTLN(Locale::STRING_ENTER_NEW_PASSWORD_FOR_DATABASE);
 	std::string haslo = "";
 	std::cin >> haslo;
 	m_file = new std::fstream("db.txt", std::fstream::trunc | std::fstream::out | std::fstream::in);
